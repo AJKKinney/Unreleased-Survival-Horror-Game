@@ -573,7 +573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9c33266e26eb847b661ab5bf0b9aa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStealthMaster: {fileID: 0}
+  detectionVolumeType: 1
 --- !u!1 &6359535822246124291
 GameObject:
   m_ObjectHideFlags: 0
@@ -684,7 +684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9c33266e26eb847b661ab5bf0b9aa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStealthMaster: {fileID: 0}
+  detectionVolumeType: 3
 --- !u!1 &6359535822335734686
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,22 +733,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa92fa2cfefadbf48a2002b30c193318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentDetectionState: 0
-  directEyesightTrigger: {fileID: 5564613912515372788}
-  peripheralEyesightTrigger: {fileID: 3314577348168690167}
-  rightOTSEyesightTrigger: {fileID: 7840698677996556748}
-  leftOTSEyesightTrigger: {fileID: 3749229271196995150}
-  directEyesightDetectionSpeed: 9
-  peripheralEyesightDetectionSpeed: 2.25
-  otsEyesightDetectionSpeed: 3.5
-  searchThreshold: 65
-  detectedThreshold: 100
+  directEyesightDetectionSpeed: 11
+  peripheralEyesightDetectionSpeed: 5
+  otsEyesightDetectionSpeed: 7
   detectionCooldownSpeed: 7.5
   detectedCooldownDelay: 10
   ignoreLayers:
     serializedVersion: 2
     m_Bits: 102
-  awareness: 0
 --- !u!1 &6359535822759811811
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,7 +851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9c33266e26eb847b661ab5bf0b9aa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStealthMaster: {fileID: 0}
+  detectionVolumeType: 2
 --- !u!1 &6359535822765219186
 GameObject:
   m_ObjectHideFlags: 0
@@ -970,4 +962,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9c33266e26eb847b661ab5bf0b9aa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStealthMaster: {fileID: 0}
+  detectionVolumeType: 3
