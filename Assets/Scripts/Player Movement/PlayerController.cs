@@ -1,16 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using AustenKinney.SoundMaster;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    //external components
-    private CharacterController characterController;
-    private PlayerActions actions;
-    private Camera mainCam;
-    private AudioManager audioManager;
-
     [Header("Player Handling")]
     [Tooltip("Base Speed controls the player's movement speed when walking")]
     [SerializeField] private float baseSpeed;
@@ -35,7 +28,11 @@ public class PlayerController : MonoBehaviour
     [Header("Debug Mode")]
     [SerializeField] private bool debugMode;
 
+
     private Animator animator;
+    private CharacterController characterController;
+    private PlayerActions actions;
+    private AudioManager audioManager;
 
 
     void Awake()
@@ -47,7 +44,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         actions = InputManager.instance.playerActions;
-        mainCam = Camera.main;
         audioManager = AudioManager.instance;
     }
 
@@ -114,7 +110,7 @@ public class PlayerController : MonoBehaviour
         if (whistleInput == true && whistling == false)
         {
             whistling = true;
-            SoundData sfx = audioManager.audioDatabase.LookUpRandomSound("Whistle");
+            SoundData sfx = audioManager.Database.LookUpRandomSound("Whistle");
             audioManager.PlaySound(sfx, transform);
             NoiseMaker.CreateNoise(transform.position, whistleRange, this.gameObject);
             whistling = false;

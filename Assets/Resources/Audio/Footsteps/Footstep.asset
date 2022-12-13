@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c46e695e0997fe94ab53137be07aba32, type: 3}
   m_Name: Footstep
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 8300000, guid: 08af4a5d656bc9e4b8dfd31a347f58f1, type: 3}
+  clip: {fileID: 8300000, guid: 08af4a5d656bc9e4b8dfd31a347f58f1, type: 3}
   gain: 0.25
-  category: 3
+  category: 2

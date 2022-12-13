@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AustenKinney.SoundMaster;
 
 public class Footstepper : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class Footstepper : MonoBehaviour
 
     private void Step()
     {
-        SoundData sfx = audioManager.audioDatabase.LookUpRandomSound("Footsteps");
+        SoundData sfx = audioManager.Database.LookUpRandomSound("Footsteps");
         audioManager.PlaySound(sfx, transform);
 
         NoiseMaker.CreateNoise(transform.position, 5, 15, transform.root.gameObject);

@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using AustenKinney.SoundMaster;
 
 /// <summary>
 /// Holds references to pause menu panels and contains functionality to open and close them.
@@ -23,10 +22,12 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
     private AudioManager audioManager;
 
-    private void Start()
+    public override void Init()
     {
         audioManager = AudioManager.instance;
     }
+
+    #region UI Methods
 
     public void OpenPausePanel()
     {
@@ -65,42 +66,44 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         exitPanel.SetActive(false);
     }
 
-    #region Settings Functions
+    #endregion
+
+    #region Settings Methods
 
     public void SetMasterVolume()
     {
-        audioManager.SetVolume(masterVolumeSlider.value, AudioCategory.Master);
+        audioManager.SetMasterVolume(masterVolumeSlider.value);
     }
 
     public void SetDialogueVolume()
     {
-        audioManager.SetVolume(dialogueVolumeSlider.value, AudioCategory.Dialogue);
+        audioManager.SetCategoryVolume(dialogueVolumeSlider.value, AudioCategory.Dialogue);
     }
 
     public void SetMusicVolume()
     {
-        audioManager.SetVolume(musicVolumeSlider.value, AudioCategory.Music);
+        audioManager.SetCategoryVolume(musicVolumeSlider.value, AudioCategory.Music);
     }
 
     public void SetAmbientVolume()
     {
-        audioManager.SetVolume(ambientVolumeSlider.value, AudioCategory.Ambient);
+        audioManager.SetCategoryVolume(ambientVolumeSlider.value, AudioCategory.Ambient);
     }
 
     public void SetSFXVolume()
     {
-        audioManager.SetVolume(sfxVolumeSlider.value, AudioCategory.SFX);
+        audioManager.SetCategoryVolume(sfxVolumeSlider.value, AudioCategory.SFX);
     }
 
     public void ResetToDefaultAudio()
     {
         audioManager.ResetAudioSettings();
-        masterVolumeSlider.value = audioManager.GetVolumeLevelForCategory(AudioCategory.Master);
+        //masterVolumeSlider.value = audioManager.GetVolumeLevelForCategory(AudioCategory.Master);
         sfxVolumeSlider.value = audioManager.GetVolumeLevelForCategory(AudioCategory.SFX);
         musicVolumeSlider.value = audioManager.GetVolumeLevelForCategory(AudioCategory.Music);
         ambientVolumeSlider.value = audioManager.GetVolumeLevelForCategory(AudioCategory.Ambient);
         dialogueVolumeSlider.value = audioManager.GetVolumeLevelForCategory(AudioCategory.Dialogue);
-        subtitlesToggle.isOn = audioManager.audioSettings.subtitles;
+        subtitlesToggle.isOn = audioManager.Settings.Subtitles;
     }
 
     public void SetSubtitles()
