@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using AustenKinney.Essentials;
 
-namespace AustenKinney.SoundMaster
+namespace AustenKinney.AudioSystem
 {
     /// <summary>
     /// Manages audio sources and volume levels in Lamplight.

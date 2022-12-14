@@ -1,5 +1,6 @@
 using UnityEngine;
-using AustenKinney.SoundMaster;
+using AustenKinney.AudioSystem;
+using Lamplight.Input;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -31,7 +32,6 @@ public class PlayerController : MonoBehaviour
 
     private Animator animator;
     private CharacterController characterController;
-    private PlayerActions actions;
     private AudioManager audioManager;
 
 
@@ -43,7 +43,6 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        actions = InputManager.instance.playerActions;
         audioManager = AudioManager.instance;
     }
 
@@ -55,7 +54,7 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        moveInput = actions.GameActions.Move.ReadValue<Vector2>();
+        moveInput = InputProvider.playerActions.GameActions.Move.ReadValue<Vector2>();
 
         if (moveInput.magnitude > 0 || currentVelocity.magnitude > 0.1f)
         {
@@ -93,7 +92,7 @@ public class PlayerController : MonoBehaviour
 
     private float CalculateSpeed()
     {
-        if(actions.GameActions.Sprint.IsPressed())
+        if(InputProvider.playerActions.GameActions.Sprint.IsPressed())
         {
             return sprintSpeed;
         }
@@ -105,7 +104,7 @@ public class PlayerController : MonoBehaviour
 
     private void Whistle()
     {
-        bool whistleInput = actions.GameActions.Whistle.WasPerformedThisFrame();
+        bool whistleInput = InputProvider.playerActions.GameActions.Whistle.WasPressedThisFrame();
 
         if (whistleInput == true && whistling == false)
         {

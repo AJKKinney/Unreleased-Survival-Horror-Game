@@ -1,4 +1,4 @@
-namespace AustenKinney.SoundMaster
+namespace AustenKinney.AudioSystem
 {
     /// <summary>
     /// The different Categories of audio. These are used to seperate the game audio for mixing in the audio settings.

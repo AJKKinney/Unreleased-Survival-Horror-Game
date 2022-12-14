@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AustenKinney.SoundMaster
+namespace AustenKinney.AudioSystem
 {
     /// <summary>
     /// Contains all the data needed for a sound effect or song.

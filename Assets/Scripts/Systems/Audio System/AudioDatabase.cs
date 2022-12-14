@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using AustenKinney.Essentials;
 
-namespace AustenKinney.SoundMaster
+namespace AustenKinney.AudioSystem
 {
     /// <summary>
     /// Stores all the audio data into a sounds dictionary, so that it can be accessed at runtime.

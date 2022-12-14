@@ -1,0 +1,16 @@
+{
+    "name": "AustenKinney.AudioSystem",
+    "rootNamespace": "AustenKinney.AudioSystem",
+    "references": [
+        "GUID:d22163fc803a3634296e4e19ac20f1b9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
