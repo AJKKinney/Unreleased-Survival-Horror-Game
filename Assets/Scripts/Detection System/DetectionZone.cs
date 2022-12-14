@@ -1,4 +1,4 @@
-namespace AustenKinney.AI.DetectionSystem
+namespace AustenKinney.DetectionSystem
 {
     public enum DetectionZone
     {

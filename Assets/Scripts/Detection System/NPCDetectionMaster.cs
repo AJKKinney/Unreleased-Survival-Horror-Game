@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AustenKinney.AI.DetectionSystem
+namespace AustenKinney.DetectionSystem
 {
     /// <summary>
     /// Controls an NPC's detection state and detection systems.
@@ -28,6 +27,13 @@ namespace AustenKinney.AI.DetectionSystem
         /// A list of the objects which the detection master is tracking
         /// </summary>
         private List<DetectionData> trackedObjects = new List<DetectionData>();
+        private DetectionData playerData = null;
+
+        #region Getters & Setters
+
+        public DetectionData PlayerData { get { return playerData; } }
+
+        #endregion
 
 
         private void Update()
@@ -57,15 +63,15 @@ namespace AustenKinney.AI.DetectionSystem
                         {
                             if (trackedObjects[i].CurrentZone == DetectionZone.DirectEyesight)
                             {
-                                trackedObjects[i].Awareness += directEyesightDetectionSpeed * numberOfCollidersInLOS * Time.deltaTime;
+                                trackedObjects[i].IncrementAwareness(directEyesightDetectionSpeed * numberOfCollidersInLOS * Time.deltaTime);
                             }
                             else if (trackedObjects[i].CurrentZone == DetectionZone.PeripheralEyesight)
                             {
-                                trackedObjects[i].Awareness += peripheralEyesightDetectionSpeed * numberOfCollidersInLOS * Time.deltaTime;
+                                trackedObjects[i].IncrementAwareness(peripheralEyesightDetectionSpeed * numberOfCollidersInLOS * Time.deltaTime);
                             }
                             else if (trackedObjects[i].CurrentZone == DetectionZone.OTSEyesight)
                             {
-                                trackedObjects[i].Awareness += otsEyesightDetectionSpeed * numberOfCollidersInLOS * Time.deltaTime;
+                                trackedObjects[i].IncrementAwareness(otsEyesightDetectionSpeed * numberOfCollidersInLOS * Time.deltaTime);
                             }
                         }
 
@@ -81,10 +87,15 @@ namespace AustenKinney.AI.DetectionSystem
                 }
                 else if (trackedObjects[i].Awareness > 0)
                 {
-                    trackedObjects[i].Awareness -= detectionCooldownSpeed * Time.deltaTime;
+                    trackedObjects[i].IncrementAwareness(-detectionCooldownSpeed * Time.deltaTime);
                 }
                 else if (trackedObjects[i].Awareness < 0 && trackedObjects[i].CurrentDetectionVolumes.Count == 0)
                 {
+                    if(trackedObjects[i] == playerData)
+                    {
+                        playerData = null;
+                    }
+
                     trackedObjects.RemoveAt(i);
                 }
             }
@@ -115,14 +126,7 @@ namespace AustenKinney.AI.DetectionSystem
         }
 
 
-        public enum DetectionState
-        {
-            Undetected,
-            Alert,
-            Detected
-        }
-
-        public DetectionData GetDetectionData(GameObject key)
+        public DetectionData GetDetectionData(DetectableObject key)
         {
             DetectionData detectionData;
 
@@ -137,10 +141,16 @@ namespace AustenKinney.AI.DetectionSystem
 
             detectionData = new DetectionData(key);
             trackedObjects.Add(detectionData);
+            
+            if(key.gameObject.CompareTag("Player"))
+            {
+                playerData = detectionData;
+            }
+
             return detectionData;
         }
 
-        public void RecieveNoise(float increaseAwareness, GameObject objectToTrack)
+        public void RecieveNoise(float increaseAwareness, DetectableObject objectToTrack)
         {
             DetectionData data = GetDetectionData(objectToTrack);
 
@@ -151,14 +161,12 @@ namespace AustenKinney.AI.DetectionSystem
                 return;
             }
 
-            if (increaseAwareness > data.AlertThreshold - data.Awareness)
+            if(increaseAwareness + data.Awareness > data.AlertThreshold)
             {
-                data.Awareness = data.AlertThreshold;
+                increaseAwareness = data.AlertThreshold - data.Awareness;
             }
-            else
-            {
-                data.Awareness += increaseAwareness;
-            }
+
+            data.IncrementAwareness(increaseAwareness);
 
             data.SetDetectionState();
 

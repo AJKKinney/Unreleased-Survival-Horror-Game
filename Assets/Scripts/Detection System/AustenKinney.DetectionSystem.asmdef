@@ -1,6 +1,6 @@
 {
-    "name": "AustenKinney.AI.DetectionSystem",
-    "rootNamespace": "AustenKinney.AI.DetectionSystem",
+    "name": "AustenKinney.DetectionSystem",
+    "rootNamespace": "AustenKinney.DetectionSystem",
     "references": [
         "GUID:d22163fc803a3634296e4e19ac20f1b9"
     ],

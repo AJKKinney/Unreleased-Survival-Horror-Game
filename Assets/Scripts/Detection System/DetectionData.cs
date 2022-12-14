@@ -1,13 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AustenKinney.AI.DetectionSystem
+namespace AustenKinney.DetectionSystem
 {
     [System.Serializable]
     public class DetectionData
     {
-        private GameObject trackedObject;
+        private DetectableObject trackedObject;
         private float awareness;
         private float delayTimer;
         private BoxCollider[] hitboxes;
@@ -20,7 +19,7 @@ namespace AustenKinney.AI.DetectionSystem
 
         #region Getters & Setters
 
-        public GameObject TrackedObject { get { return trackedObject; } }
+        public DetectableObject TrackedObject { get { return trackedObject; } }
         public BoxCollider[] Hitboxes { get { return hitboxes; } }
         public float Awareness { get { return awareness; } set { awareness = value; } }
         public float DelayTimer { get { return delayTimer; } set { delayTimer = value; } }
@@ -33,13 +32,19 @@ namespace AustenKinney.AI.DetectionSystem
 
         #endregion
 
-        public DetectionData(GameObject detectableActor)
+        #region Constructors
+
+        public DetectionData(DetectableObject detectableActor)
         {
             trackedObject = detectableActor;
-            hitboxes = trackedObject.GetComponentsInChildren<BoxCollider>();
+            hitboxes = trackedObject.DetectableColliders;
             awareness = 0;
             currentState = DetectionState.Undetected;
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Sets the objects current detection state based on the detector's current awareness.
@@ -48,19 +53,34 @@ namespace AustenKinney.AI.DetectionSystem
         {
             if (awareness >= detectedThreshold)
             {
+                if (currentState != DetectionState.Detected)
+                {
+                    trackedObject.CallOnDetected();
+                }
+
                 currentState = DetectionState.Detected;
             }
-            else if (awareness >= alertThreshold)
+            else if (awareness >= alertThreshold && currentState != DetectionState.Detected)
             {
+                if (currentState != DetectionState.Alert)
+                {
+                    trackedObject.CallOnAlert();
+                }
+
                 currentState = DetectionState.Alert;
             }
             else if (awareness <= 0)
             {
+                if(currentState != DetectionState.Alert)
+                {
+                    trackedObject.CallOnUndetected();
+                }
+
                 currentState = DetectionState.Undetected;
             }
         }
 
-        public void AdjustAwareness(float awarenessChange)
+        public void IncrementAwareness(float awarenessChange)
         {
             awareness += awarenessChange;
             SetDetectionState();
@@ -76,15 +96,15 @@ namespace AustenKinney.AI.DetectionSystem
             {
                 for (int i = 0; i < currentDetectionVolumes.Count; i++)
                 {
-                    if (currentDetectionVolumes[i].detectionVolumeType == DetectionZone.DirectEyesight)
+                    if (currentDetectionVolumes[i].DetectionVolumeType == DetectionZone.DirectEyesight)
                     {
                         currentZone = DetectionZone.DirectEyesight;
                     }
-                    else if (currentZone != DetectionZone.DirectEyesight && currentDetectionVolumes[i].detectionVolumeType == DetectionZone.PeripheralEyesight)
+                    else if (currentZone != DetectionZone.DirectEyesight && currentDetectionVolumes[i].DetectionVolumeType == DetectionZone.PeripheralEyesight)
                     {
                         currentZone = DetectionZone.PeripheralEyesight;
                     }
-                    else if (currentZone != DetectionZone.DirectEyesight && currentZone != DetectionZone.PeripheralEyesight && currentDetectionVolumes[i].detectionVolumeType == DetectionZone.OTSEyesight)
+                    else if (currentZone != DetectionZone.DirectEyesight && currentZone != DetectionZone.PeripheralEyesight && currentDetectionVolumes[i].DetectionVolumeType == DetectionZone.OTSEyesight)
                     {
                         currentZone = DetectionZone.OTSEyesight;
                     }
@@ -92,5 +112,7 @@ namespace AustenKinney.AI.DetectionSystem
                 }
             }
         }
+
+        #endregion
     }
 }

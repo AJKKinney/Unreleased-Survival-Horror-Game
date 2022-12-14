@@ -1,6 +1,6 @@
 using UnityEngine;
 using AustenKinney.AudioSystem;
-using AustenKinney.AI.DetectionSystem;
+using AustenKinney.DetectionSystem;
 using Lamplight.Input;
 
 [RequireComponent(typeof(CharacterController))]
@@ -34,12 +34,14 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private CharacterController characterController;
     private AudioManager audioManager;
+    private DetectableObject detectableObject;
 
 
     void Awake()
     {
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
+        detectableObject = transform.root.GetComponent<DetectableObject>();
     }
 
     private void Start()
@@ -112,7 +114,7 @@ public class PlayerController : MonoBehaviour
             whistling = true;
             SoundData sfx = audioManager.Database.LookUpRandomSound("Whistle");
             audioManager.PlaySound(sfx, transform);
-            NoiseMaker.CreateNoise(transform.position, whistleRange, this.gameObject);
+            NoiseMaker.CreateNoise(transform.position, whistleRange, detectableObject);
             whistling = false;
         }
     }

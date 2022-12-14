@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace AustenKinney.AI.DetectionSystem
+namespace AustenKinney.DetectionSystem
 {
     public class NoiseMaker
     {
-        public static void CreateNoise(Vector3 worldPosition, float travelDistance, float awareness, GameObject trackableObject)
+        public static void CreateNoise(Vector3 worldPosition, float travelDistance, float awareness, DetectableObject trackableObject)
         {
             Collider[] colliders = Physics.OverlapSphere(worldPosition, travelDistance);
 
@@ -36,7 +34,7 @@ namespace AustenKinney.AI.DetectionSystem
             }
         }
 
-        public static void CreateNoise(Vector3 worldPosition, float travelDistance, GameObject trackableObject)
+        public static void CreateNoise(Vector3 worldPosition, float travelDistance, DetectableObject trackableObject)
         {
             Collider[] colliders = Physics.OverlapSphere(worldPosition, travelDistance);
 

@@ -1,12 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
 using AustenKinney.Essentials;
 using AustenKinney.AudioSystem;
 using AustenKinney.GameState;
 using Lamplight.Input;
 
-namespace Lamplight.GameMenu
+namespace Lamplight.UI
 {
     /// <summary>
     /// Manages Menu Systems for in-game menus. Holds references to pause menu panels and contains functionality to open and close them.
