@@ -1,5 +1,6 @@
 using UnityEngine;
 using AustenKinney.AudioSystem;
+using AustenKinney.AI.DetectionSystem;
 using Lamplight.Input;
 
 [RequireComponent(typeof(CharacterController))]

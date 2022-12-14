@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AustenKinney.AudioSystem;
+using AustenKinney.AI.DetectionSystem;
 
 public class Footstepper : MonoBehaviour
 {

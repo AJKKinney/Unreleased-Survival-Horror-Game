@@ -117,7 +117,7 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    accuratePlacement: 0
+    accuratePlacement: 1
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
@@ -545,11 +545,15 @@ PrefabInstance:
       objectReference: {fileID: 262916455}
     - target: {fileID: 8980684866048605124, guid: 4d7ae4e4036f80345a8962dc9a7d65d3, type: 3}
       propertyPath: m_VersionIndex
-      value: 306
+      value: 315
       objectReference: {fileID: 0}
     - target: {fileID: 8980684866731928007, guid: 4d7ae4e4036f80345a8962dc9a7d65d3, type: 3}
       propertyPath: m_Name
       value: NPC (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8980684866731928008, guid: 4d7ae4e4036f80345a8962dc9a7d65d3, type: 3}
+      propertyPath: m_BaseOffset
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8980684866731928012, guid: 4d7ae4e4036f80345a8962dc9a7d65d3, type: 3}
       propertyPath: m_RootOrder
@@ -677,7 +681,7 @@ PrefabInstance:
       objectReference: {fileID: 710537321}
     - target: {fileID: 8980684866048605124, guid: 4d7ae4e4036f80345a8962dc9a7d65d3, type: 3}
       propertyPath: m_VersionIndex
-      value: 303
+      value: 312
       objectReference: {fileID: 0}
     - target: {fileID: 8980684866731928007, guid: 4d7ae4e4036f80345a8962dc9a7d65d3, type: 3}
       propertyPath: m_Name
@@ -750,7 +754,7 @@ PrefabInstance:
       objectReference: {fileID: 1944972083}
     - target: {fileID: 8980684866048605124, guid: 4d7ae4e4036f80345a8962dc9a7d65d3, type: 3}
       propertyPath: m_VersionIndex
-      value: 306
+      value: 315
       objectReference: {fileID: 0}
     - target: {fileID: 8980684866731928007, guid: 4d7ae4e4036f80345a8962dc9a7d65d3, type: 3}
       propertyPath: m_Name
@@ -2178,11 +2182,23 @@ PrefabInstance:
       objectReference: {fileID: 1041579438}
     - target: {fileID: 8980684866048605124, guid: 4d7ae4e4036f80345a8962dc9a7d65d3, type: 3}
       propertyPath: m_VersionIndex
-      value: 306
+      value: 315
       objectReference: {fileID: 0}
     - target: {fileID: 8980684866731928007, guid: 4d7ae4e4036f80345a8962dc9a7d65d3, type: 3}
       propertyPath: m_Name
       value: NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 8980684866731928008, guid: 4d7ae4e4036f80345a8962dc9a7d65d3, type: 3}
+      propertyPath: m_Height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8980684866731928008, guid: 4d7ae4e4036f80345a8962dc9a7d65d3, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8980684866731928009, guid: 4d7ae4e4036f80345a8962dc9a7d65d3, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8980684866731928012, guid: 4d7ae4e4036f80345a8962dc9a7d65d3, type: 3}
       propertyPath: m_RootOrder
