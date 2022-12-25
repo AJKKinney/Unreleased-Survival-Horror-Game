@@ -19,6 +19,8 @@ namespace AustenKinney.DetectionSystem
         [SerializeField] private float detectionCooldownSpeed;
         [Tooltip("The amount of time the player must be undetected for the awarness of an NPC to begin to lower.")]
         [SerializeField] private float detectedCooldownDelay;
+        [Tooltip("The max distance from which an npc may detect objects.")]
+        [SerializeField] private float maxDetectionDistance;
         [Tooltip("Layers which will be ignored by the NPC's detection system. Colliders on layers not included will block the NPC's line of sight.")]
         [SerializeField] private LayerMask ignoreLayers;
 
@@ -45,58 +47,65 @@ namespace AustenKinney.DetectionSystem
         {
             for (int i = 0; i < trackedObjects.Count; i++)
             {
-                int numberOfCollidersInLOS = 0;
+                float distance = Vector3.Distance(trackedObjects[i].TrackedObject.transform.position, transform.position);
 
-                if (trackedObjects[i].CurrentZone != DetectionZone.None)
+                if (distance < maxDetectionDistance)
                 {
-                    for (int z = 0; z < trackedObjects[i].Hitboxes.Length; z++)
-                    {
-                        if (HasLineOfSight(trackedObjects[i].Hitboxes[z]) == true)
-                        {
-                            numberOfCollidersInLOS += 1;
-                        }
-                    }
+                    float distanceModifier = 1 - (distance / maxDetectionDistance);
 
-                    if (numberOfCollidersInLOS > 0)
+                    int numberOfCollidersInLOS = 0;
+
+                    if (trackedObjects[i].CurrentZone != DetectionZone.None)
                     {
-                        if (trackedObjects[i].Awareness < trackedObjects[i].DetectedThreshold)
+                        for (int z = 0; z < trackedObjects[i].Hitboxes.Length; z++)
                         {
-                            if (trackedObjects[i].CurrentZone == DetectionZone.DirectEyesight)
+                            if (HasLineOfSight(trackedObjects[i].Hitboxes[z]) == true)
                             {
-                                trackedObjects[i].IncrementAwareness(directEyesightDetectionSpeed * numberOfCollidersInLOS * Time.deltaTime);
-                            }
-                            else if (trackedObjects[i].CurrentZone == DetectionZone.PeripheralEyesight)
-                            {
-                                trackedObjects[i].IncrementAwareness(peripheralEyesightDetectionSpeed * numberOfCollidersInLOS * Time.deltaTime);
-                            }
-                            else if (trackedObjects[i].CurrentZone == DetectionZone.OTSEyesight)
-                            {
-                                trackedObjects[i].IncrementAwareness(otsEyesightDetectionSpeed * numberOfCollidersInLOS * Time.deltaTime);
+                                numberOfCollidersInLOS += 1;
                             }
                         }
 
-                        trackedObjects[i].DelayTimer = detectedCooldownDelay;
-                        trackedObjects[i].SetDetectionState();
+                        if (numberOfCollidersInLOS > 0)
+                        {
+                            if (trackedObjects[i].Awareness < trackedObjects[i].DetectedThreshold)
+                            {
+                                if (trackedObjects[i].CurrentZone == DetectionZone.DirectEyesight)
+                                {
+                                    trackedObjects[i].IncrementAwareness(directEyesightDetectionSpeed * numberOfCollidersInLOS * distanceModifier * Time.deltaTime);
+                                }
+                                else if (trackedObjects[i].CurrentZone == DetectionZone.PeripheralEyesight)
+                                {
+                                    trackedObjects[i].IncrementAwareness(peripheralEyesightDetectionSpeed * numberOfCollidersInLOS * distanceModifier * Time.deltaTime);
+                                }
+                                else if (trackedObjects[i].CurrentZone == DetectionZone.OTSEyesight)
+                                {
+                                    trackedObjects[i].IncrementAwareness(otsEyesightDetectionSpeed * numberOfCollidersInLOS * distanceModifier * Time.deltaTime);
+                                }
+                            }
+
+                            trackedObjects[i].DelayTimer = detectedCooldownDelay;
+                            trackedObjects[i].SetDetectionState();
+                        }
                     }
-                }
 
 
-                if (trackedObjects[i].DelayTimer > 0)
-                {
-                    trackedObjects[i].DelayTimer -= Time.deltaTime;
-                }
-                else if (trackedObjects[i].Awareness > 0)
-                {
-                    trackedObjects[i].IncrementAwareness(-detectionCooldownSpeed * Time.deltaTime);
-                }
-                else if (trackedObjects[i].Awareness < 0 && trackedObjects[i].CurrentDetectionVolumes.Count == 0)
-                {
-                    if(trackedObjects[i] == playerData)
+                    if (trackedObjects[i].DelayTimer > 0)
                     {
-                        playerData = null;
+                        trackedObjects[i].DelayTimer -= Time.deltaTime;
                     }
+                    else if (trackedObjects[i].Awareness > 0)
+                    {
+                        trackedObjects[i].IncrementAwareness(-detectionCooldownSpeed * Time.deltaTime);
+                    }
+                    else if (trackedObjects[i].Awareness < 0 && trackedObjects[i].CurrentDetectionVolumes.Count == 0)
+                    {
+                        if (trackedObjects[i] == playerData)
+                        {
+                            playerData = null;
+                        }
 
-                    trackedObjects.RemoveAt(i);
+                        trackedObjects.RemoveAt(i);
+                    }
                 }
             }
         }
@@ -156,7 +165,7 @@ namespace AustenKinney.DetectionSystem
 
             data.DelayTimer = detectedCooldownDelay;
 
-            if (data.Awareness >= data.AlertThreshold)
+            if (data.Awareness >= data.AlertThreshold || data.CurrentState == DetectionState.Detected)
             {
                 return;
             }

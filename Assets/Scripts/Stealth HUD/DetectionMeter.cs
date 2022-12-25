@@ -66,7 +66,7 @@ namespace Lamplight.HUD
             }
             else
             {
-                detectionValue = detectionMaster.PlayerData.Awareness / detectionMaster.PlayerData.AlertThreshold;
+                detectionValue = detectionMaster.PlayerData.Awareness / detectionMaster.PlayerData.DetectedThreshold;
             }
 
             if (alertValue > 0)

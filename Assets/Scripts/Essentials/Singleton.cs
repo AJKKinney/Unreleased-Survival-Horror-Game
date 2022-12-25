@@ -35,7 +35,16 @@ namespace AustenKinney.Essentials
             }
 
             instance = this as T;
-            DontDestroyOnLoad(this);
+
+            if (transform.parent == null)
+            {
+                DontDestroyOnLoad(this);
+            }
+            else
+            {
+                DontDestroyOnLoad(transform.parent);
+            }
+
             Init();
             IsBeingDestroyed = false;
         }

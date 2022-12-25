@@ -738,6 +738,7 @@ MonoBehaviour:
   otsEyesightDetectionSpeed: 7
   detectionCooldownSpeed: 7.5
   detectedCooldownDelay: 10
+  maxDetectionDistance: 25
   ignoreLayers:
     serializedVersion: 2
     m_Bits: 102

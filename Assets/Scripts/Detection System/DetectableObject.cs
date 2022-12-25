@@ -20,19 +20,16 @@ namespace AustenKinney.DetectionSystem
         public void CallOnAlert()
         {
             OnAlert();
-            Debug.Log("alerted");
         }
 
         public void CallOnDetected()
         {
             OnDetected();
-            Debug.Log("detected");
         }
 
         public void CallOnUndetected()
         {
             OnUndetected();
-            Debug.Log("undetected");
         }
     }
 }

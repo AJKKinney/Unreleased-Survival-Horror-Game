@@ -88,9 +88,13 @@ public class PlayerController : MonoBehaviour
 
             characterController.Move(currentVelocity * Time.deltaTime);
         }
-        animator.SetFloat("ForwardVelocity", (Quaternion.Euler(0, -transform.rotation.eulerAngles.y, 0) * currentVelocity).z / sprintSpeed);
-        animator.SetFloat("RightVelocity", (Quaternion.Euler(0, -transform.rotation.eulerAngles.y, 0) * currentVelocity).x / sprintSpeed);
-        animator.SetFloat("CurrentSpeed", (currentVelocity).magnitude / sprintSpeed);
+
+        if (animator != null)
+        {
+            animator.SetFloat("ForwardVelocity", (Quaternion.Euler(0, -transform.rotation.eulerAngles.y, 0) * currentVelocity).z / sprintSpeed);
+            animator.SetFloat("RightVelocity", (Quaternion.Euler(0, -transform.rotation.eulerAngles.y, 0) * currentVelocity).x / sprintSpeed);
+            animator.SetFloat("CurrentSpeed", (currentVelocity).magnitude / sprintSpeed);
+        }
     }
 
     private float CalculateSpeed()

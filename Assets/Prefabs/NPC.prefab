@@ -939,6 +939,7 @@ GameObject:
   - component: {fileID: 8980684866731928009}
   - component: {fileID: 8980684866731928008}
   - component: {fileID: 6816806890083904147}
+  - component: {fileID: 7168147279268315639}
   m_Layer: 6
   m_Name: NPC
   m_TagString: Untagged
@@ -1064,6 +1065,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectableColliders:
   - {fileID: 8966557191286404451}
+--- !u!114 &7168147279268315639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980684866731928007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4fdb96efc128b747b4b785c78643a7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: 
+  stats:
+    health: 0
+    maxHealth: 0
+    moveSpeedMod: 0
+    damageMod: 0
+    energy: 0
+    maxEnergy: 0
+  attributes:
+    vigor: 0
+    might: 0
+    endurance: 0
+    agility: 0
 --- !u!1 &9020869607106256531
 GameObject:
   m_ObjectHideFlags: 0
