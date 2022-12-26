@@ -6,9 +6,25 @@ hidden secrets to discover.
 
 ### To Do:
 
+##### Player Jumping
+
+##### Player Crouching
+
+##### Player Rolling
+
+##### Dialogue Audio with Subtitles
+
 ##### Behavior Trees and Tools
 
 	Editor tools which can be used to build behavior trees for NPC AI to support a wide range of behaviors.
+
+##### Guard NPC AI
+
+##### Villager NPC AI
+
+##### Stats System
+
+	Sytem to store character stat data and access it for different game functions.
 
 ##### Hitboxes, Hurtboxes, and Push Boxes
 
@@ -18,10 +34,6 @@ hidden secrets to discover.
 
 	Editor tools which can be used to create branching dialogue trees that can adjust flow based on conditions set in the tree. Must
 	support dialogue audioclips with subtitles.
-
-##### Stats System
-
-	Sytem to store character stat data and access it for different game functions.
 
 ##### Inventory System
 
