@@ -179,7 +179,7 @@ namespace AustenKinney.DetectionSystem
 
             data.SetDetectionState();
 
-            Debug.Log(transform.parent.name + " heard a noise, and their awareness increased by " + increaseAwareness.ToString("F1") + "\n Awareness at " + data.Awareness);
+            //Debug.Log(transform.parent.name + " heard a noise, and their awareness increased by " + increaseAwareness.ToString("F1") + "\n Awareness at " + data.Awareness);
         }
     }
 }

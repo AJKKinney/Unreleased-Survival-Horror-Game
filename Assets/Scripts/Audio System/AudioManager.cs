@@ -93,14 +93,19 @@ namespace AustenKinney.AudioSystem
         /// Plays a looping sound in 2D space.
         /// </summary>
         /// <param name="sound">The sound to be played.</param>
-        public void PlayLoop(SoundData sound)
+        public void PlayLoop(SoundData sound, bool setVolume = true)
         {
             AudioSource audioSource = SetupAudioSource(GetAudioPool(sound.Category));
             audioSource.transform.position = Camera.main.transform.position;
             audioSource.transform.parent = Camera.main.transform;
             audioSource.loop = true;
             float volume = sound.Gain * settings.MasterVolume * GetVolumeLevelForCategory(sound.Category);
-            audioSource.volume = volume;
+
+            if (setVolume == true)
+            {
+                audioSource.volume = volume;
+            }
+
             audioSource.clip = sound.Clip;
             audioSource.Play();
         }
@@ -108,8 +113,9 @@ namespace AustenKinney.AudioSystem
         /// <summary>
         /// Plays a looping song in 2D space.
         /// </summary>
-        /// <param name="song"></param>
-        public void PlayLoop(SongData song)
+        /// <param name="song">The song loop to be played</param>
+        /// <param name="setVolume">Determines whether the volume should be set to the level set in the songData.</param>
+        public void PlayLoop(SongData song, bool setVolume = true)
         {
             for (int i = 0; i < song.Tracks.Count; i++)
             {
@@ -118,8 +124,14 @@ namespace AustenKinney.AudioSystem
                 audioSource.transform.parent = Camera.main.transform;
                 audioSource.loop = true;
                 float volume = song.Gain * settings.MasterVolume * GetVolumeLevelForCategory(song.Category);
-                audioSource.volume = volume;
-                audioSource.clip = song.Tracks[i];
+
+                if (setVolume == true)
+                {
+                    audioSource.volume = volume;
+                }
+
+
+                audioSource.clip = song.Tracks[i].Clips[0];
                 audioSource.Play();
 
                 if (i != 0)
@@ -127,6 +139,102 @@ namespace AustenKinney.AudioSystem
                     SyncSources(song.Category);
                 }
             }
+        }
+
+        /// <summary>
+        /// Fades out the current playing song, and fades in the new song. This is the recommended way of playing songs.
+        /// </summary>
+        /// <param name="song">The song to be played.</param>
+        /// <param name="transitionLength">How long in seconds it will take to transition fully.</param>
+        public IEnumerator TransitionSong(SongData song, float transitionLength)
+        {
+            Debug.Log("Transitioning songs...");
+
+            yield return StartCoroutine(FadeOutSong(song, transitionLength/2));
+
+            yield return StartCoroutine(FadeInSong(song, transitionLength / 2));
+            Debug.Log("Song transition completed. Now playing: " + song.name);
+        }
+
+        public IEnumerator FadeOutSong(SongData song, float transitionLength)
+        {
+            List<AudioSource> pool = GetAudioPool(song.Category);
+
+            if (pool.Count > 0 && pool[0].isPlaying == true)
+            {
+                for (int i = 0; i < pool.Count; i++)
+                {
+                    StartCoroutine(Fade(pool[i], pool[i].volume, 0, transitionLength / 2));
+                }
+
+                yield return new WaitForSeconds(transitionLength / 2);
+
+                for (int i = 0; i < pool.Count; i++)
+                {
+                    pool[i].Stop();
+                }
+            }
+        }
+
+        public IEnumerator FadeOutTrack(SongData song, int track, float transitionLength)
+        {
+
+            List<AudioSource> pool = GetAudioPool(song.Category);
+
+            if (pool.Count > 0 && pool[track].isPlaying == true)
+            {
+                StartCoroutine(Fade(pool[track], pool[track].volume, 0, transitionLength / 2));
+
+
+                yield return new WaitForSeconds(transitionLength / 2);
+
+                pool[track].Stop();
+            }
+        }
+
+        public IEnumerator FadeInSong(SongData song, float transitionLength)
+        {
+            List<AudioSource> pool = GetAudioPool(song.Category);
+
+            float volume = song.Gain * settings.MasterVolume * GetVolumeLevelForCategory(song.Category);
+
+            PlayLoop(song, false);
+
+            for (int i = 0; i < pool.Count; i++)
+            {
+                pool[i].volume = 0;
+                StartCoroutine(Fade(pool[i], pool[i].volume, volume, transitionLength / 2));
+            }
+
+            yield return new WaitForSeconds(transitionLength / 2);
+        }
+
+        public IEnumerator FadeInTrack(SongData song, int track, float transitionLength)
+        {
+            List<AudioSource> pool = GetAudioPool(song.Category);
+
+            SetupAudioSource(pool);
+
+            float volume = song.Gain * settings.MasterVolume * GetVolumeLevelForCategory(song.Category);
+
+            pool[track].volume = 0;
+            StartCoroutine(Fade(pool[track], pool[track].volume, volume, transitionLength / 2));
+
+            yield return new WaitForSeconds(transitionLength / 2);
+        }
+
+        /// <summary>
+        /// Fades out the current playing track clip, and fades in the new track clip. This is the recommended way of changing clips for an adaptive soundtrack.
+        /// </summary>
+        /// <param name="song">The song to be played.</param>
+        /// <param name="track">The index of the track to transition</param>
+        /// <param name="clip">The index of the clip of the song on the given track to be played</param>
+        /// <param name="transitionLength">How long in seconds it will take to transition fully.</param>
+        public IEnumerator TransitionTrack(SongData song, int track, int clip, float transitionLength)
+        {
+            yield return StartCoroutine(FadeOutTrack(song, track, transitionLength / 2));
+
+            yield return StartCoroutine(FadeInTrack(song, track, transitionLength / 2));
         }
 
         /// <summary>
@@ -155,15 +263,18 @@ namespace AustenKinney.AudioSystem
         /// <param name="fadeTime">The amount of time it takes for the volume level to fade to the target volume</param>
         /// <param name="timer">The current value for the timer. Set to 0 when starting a fade.</param>
         /// <returns></returns>
-        public IEnumerator Fade(AudioSource source, float targetVolume, float fadeTime, float timer = 0)
+        public IEnumerator Fade(AudioSource source, float startVolume, float targetVolume, float fadeTime, float timer = 0)
         {
-            timer += Time.deltaTime / fadeTime;
+            yield return new WaitForEndOfFrame();
+            timer += Time.deltaTime;
 
-            source.volume = Mathf.Lerp(source.volume, targetVolume, timer);
+            //Debug.Log("Timer: " + timer + ". Transition: " + (timer / fadeTime));
+
+            source.volume = Mathf.Lerp(startVolume, targetVolume, timer / fadeTime);
 
             if(source.volume != targetVolume)
             {
-                yield return Fade(source, targetVolume, fadeTime, timer);
+                yield return Fade(source, startVolume, targetVolume, fadeTime, timer);
             }
             else
             {
@@ -282,7 +393,7 @@ namespace AustenKinney.AudioSystem
         #region Deprecated Methods
 
         /// <summary>
-        /// Sets the volume of all audio assigned to a category.
+        /// Sets the volume of all audio assigned to a category. Use the setter instead.
         /// </summary>
         /// <param name="volume">The volume of the audio which is played in the assigned category</param>
         /// <param name="category">The category of audio whose volume is to be set</param>

@@ -9,7 +9,7 @@ namespace AustenKinney.AudioSystem
     public class SongData : ScriptableObject
     {
         [Tooltip("The audio clip which will be played in the game.")]
-        [SerializeField] private List<AudioClip> tracks;
+        [SerializeField] private List<Track> tracks;
 
         [Tooltip("The adjusted volume of the audioclip.")]
         [Range(0, 1)]
@@ -23,7 +23,7 @@ namespace AustenKinney.AudioSystem
         /// <summary>
         /// The song tracks which will be played simultaneously in the game.
         /// </summary>
-        public List<AudioClip> Tracks { get { return tracks; } }
+        public List<Track> Tracks { get { return tracks; } }
 
         /// <summary>
         /// The adjusted volume of the song.

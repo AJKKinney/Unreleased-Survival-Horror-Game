@@ -16,9 +16,20 @@ namespace AustenKinney.AudioSystem
             PlaySong(0);
         }
 
+        private bool transitioned = false;
+
+        private void Update()
+        {
+            if(Time.timeSinceLevelLoad >= 5 && transitioned == false)
+            {
+                PlaySong(0);
+                transitioned = true;
+            }
+        }
+
         private void PlaySong(int index)
         {
-            audioManager.PlayLoop(songs[index]);
+            StartCoroutine(audioManager.TransitionSong(songs[index], 5));
         }
     }
 }
