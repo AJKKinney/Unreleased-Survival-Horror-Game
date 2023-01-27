@@ -1,3 +1,5 @@
+using UnityEngine.InputSystem;
+
 namespace Lamplight.Input
 {
     public static class InputProvider

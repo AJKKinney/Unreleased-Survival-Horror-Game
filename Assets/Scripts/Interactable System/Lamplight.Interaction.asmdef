@@ -1,0 +1,18 @@
+{
+    "name": "Lamplight.Interaction",
+    "rootNamespace": "Lamplight.Interaction",
+    "references": [
+        "GUID:d22163fc803a3634296e4e19ac20f1b9",
+        "GUID:d9f5b96d094902d4490b55987b466e5f",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

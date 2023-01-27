@@ -205,7 +205,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -640,7 +640,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -940,6 +940,8 @@ GameObject:
   - component: {fileID: 8980684866731928008}
   - component: {fileID: 6816806890083904147}
   - component: {fileID: 7168147279268315639}
+  - component: {fileID: 1920657384}
+  - component: {fileID: 1920657383}
   m_Layer: 6
   m_Name: NPC
   m_TagString: Untagged
@@ -1047,7 +1049,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 1
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -1090,6 +1092,31 @@ MonoBehaviour:
     might: 0
     endurance: 0
     agility: 0
+--- !u!65 &1920657384
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980684866731928007}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3, y: 2, z: 3}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1920657383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980684866731928007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a27f05939caf04a4a9bb9ef9ea49b40c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9020869607106256531
 GameObject:
   m_ObjectHideFlags: 0
@@ -1124,7 +1151,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1191,7 +1218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6359535822128486269, guid: f65169e0db8c5834a8af6cbdfb7d684b, type: 3}
       propertyPath: m_VersionIndex
-      value: 237
+      value: 552
       objectReference: {fileID: 0}
     - target: {fileID: 6359535822246124292, guid: f65169e0db8c5834a8af6cbdfb7d684b, type: 3}
       propertyPath: m_Enabled
