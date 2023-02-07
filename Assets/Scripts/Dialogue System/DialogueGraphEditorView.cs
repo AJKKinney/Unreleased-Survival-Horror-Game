@@ -15,12 +15,16 @@ namespace AustenKinney.Dialogue
 
     public class DialogueGraphEditorView : GraphView
     {
+        public List<DialogueNode> Nodes = new List<DialogueNode>();
+
         public Blackboard Blackboard = new Blackboard();
 
         public List<ExposedProperty> ExposedProperties { get; private set; } = new List<ExposedProperty>();
 
         public readonly Vector2 DefaultNodeSize = new Vector2(200, 150);
         public readonly Vector2 DefaultCommentBlockSize = new Vector2(300, 200);
+
+        #region Constructor
 
         public DialogueGraphEditorView(DialogueGraphEditor editorWindow)
         {
@@ -38,6 +42,10 @@ namespace AustenKinney.Dialogue
 
             AddElement(GetEntryPointNodeInstance());
         }
+
+        #endregion
+
+        #region Blackboard Methods
 
         public void AddPropertyToBlackBoard(ExposedProperty property, bool loadMode = false)
         {
@@ -72,15 +80,45 @@ namespace AustenKinney.Dialogue
             Blackboard.Add(container);
         }
 
+        public void ClearBlackBoardAndExposedProperties()
+        {
+            ExposedProperties.Clear();
+            Blackboard.Clear();
+        }
+
+        #endregion
+
+        #region Comment Blocks
+
+        public Group CreateCommentBlock(Rect rect, CommentBlockData commentBlockData = null)
+        {
+            if (commentBlockData == null)
+                commentBlockData = new CommentBlockData();
+            var group = new Group
+            {
+                autoUpdateGeometry = true,
+                title = commentBlockData.Title
+            };
+            AddElement(group);
+            group.SetPosition(rect);
+            return group;
+        }
+
+        #endregion
+
+        #region Node Methods
+
         private DialogueNode GetEntryPointNodeInstance()
         {
             var nodeCache = new DialogueNode()
             {
-                title = "START",
+                title = "Entry Node",
                 GUID = Guid.NewGuid().ToString(),
                 DialogueText = "ENTRYPOINT",
-                EntryPoint = true
+                Type = NodeType.Entry
             };
+
+            nodeCache.styleSheets.Add(Resources.Load<StyleSheet>("Editor/Dialogue/EntryNode"));
 
             var generatedPort = GetPortInstance(nodeCache, Direction.Output);
             generatedPort.portName = "Next";
@@ -92,45 +130,104 @@ namespace AustenKinney.Dialogue
             nodeCache.RefreshExpandedState();
             nodeCache.RefreshPorts();
             nodeCache.SetPosition(new Rect(100, 200, 100, 150));
+
+            Nodes.Add(nodeCache);
+
             return nodeCache;
         }
-        public void CreateNewDialogueNode(string nodeName, Vector2 position)
+
+        public void CreateNewDialogueNode(string nodeName, Vector2 position, NodeType type)
         {
-            AddElement(CreateNode(nodeName, position));
+            AddElement(CreateNode(nodeName, position, type, "Enter dialogue text here."));;
         }
 
-        public DialogueNode CreateNode(string nodeName, Vector2 position)
+        public DialogueNode CreateNode(string nodeName, Vector2 position, NodeType type, string dialogueText = "")
         {
             var tempDialogueNode = new DialogueNode()
             {
                 title = nodeName,
-                DialogueText = nodeName,
-                GUID = Guid.NewGuid().ToString()
+                DialogueText = dialogueText,
+                GUID = Guid.NewGuid().ToString(),
+                Type = type
             };
-            tempDialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("Editor/Dialogue/DialogueNode"));
+            tempDialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("Editor/Dialogue/" + type.ToString() +"Node"));
             var inputPort = GetPortInstance(tempDialogueNode, Direction.Input, Port.Capacity.Multi);
             inputPort.portName = "Input";
             tempDialogueNode.inputContainer.Add(inputPort);
             tempDialogueNode.RefreshExpandedState();
             tempDialogueNode.RefreshPorts();
-            tempDialogueNode.SetPosition(new Rect(position,
-                DefaultNodeSize)); //To-Do: implement screen center instantiation positioning
+            tempDialogueNode.SetPosition(new Rect(position, DefaultNodeSize)); //To-Do: implement screen center instantiation positioning
 
             var textField = new TextField("");
             textField.RegisterValueChangedCallback(evt =>
             {
                 tempDialogueNode.DialogueText = evt.newValue;
-                tempDialogueNode.title = evt.newValue;
             });
-            textField.SetValueWithoutNotify(tempDialogueNode.title);
+            textField.SetValueWithoutNotify(tempDialogueNode.DialogueText);
             tempDialogueNode.mainContainer.Add(textField);
 
-            var button = new Button(() => { AddChoicePort(tempDialogueNode); })
+            if (tempDialogueNode.Type == NodeType.Choice)
             {
-                text = "Add Choice"
-            };
-            tempDialogueNode.titleButtonContainer.Add(button);
+                var button = new Button(() => { AddChoicePort(tempDialogueNode); })
+                {
+                    text = "Add Choice"
+                };
+                tempDialogueNode.titleButtonContainer.Add(button);
+            }
+            else if(tempDialogueNode.Type == NodeType.TestProperty)
+            {
+                AddOutputPort(tempDialogueNode, "Success");
+                AddOutputPort(tempDialogueNode, "Failure");
+            }
+            else
+            {
+                AddOutputPort(tempDialogueNode, "Output");
+            }
+
+            Nodes.Add(tempDialogueNode);
+
             return tempDialogueNode;
+        }
+
+        #endregion
+
+        #region Port Methods
+
+        public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
+        {
+            var compatiblePorts = new List<Port>();
+            var startPortView = startPort;
+
+            ports.ForEach((port) =>
+            {
+                var portView = port;
+                if (startPortView != portView && startPortView.node != portView.node)
+                    compatiblePorts.Add(port);
+            });
+
+            return compatiblePorts;
+        }
+
+        private Port GetPortInstance(DialogueNode node, Direction nodeDirection, Port.Capacity capacity = Port.Capacity.Single)
+        {
+            return node.InstantiatePort(Orientation.Horizontal, nodeDirection, capacity, typeof(float));
+        }
+
+        public void AddOutputPort(DialogueNode nodeCache, string overriddenPortName = "")
+        {
+            var generatedPort = GetPortInstance(nodeCache, Direction.Output);
+            var portLabel = generatedPort.contentContainer.Q<Label>("type");
+
+            var outputPortCount = nodeCache.outputContainer.Query("connector").ToList().Count();
+            var outputPortName = string.IsNullOrEmpty(overriddenPortName)
+                ? $"Option {outputPortCount + 1}"
+                : overriddenPortName;
+
+            generatedPort.portName = outputPortName;
+
+            nodeCache.outputContainer.Add(generatedPort);
+            nodeCache.RefreshPorts();
+            nodeCache.RefreshExpandedState();
         }
 
         public void AddChoicePort(DialogueNode nodeCache, string overriddenPortName = "")
@@ -164,15 +261,10 @@ namespace AustenKinney.Dialogue
             nodeCache.RefreshExpandedState();
         }
 
-        private Port GetPortInstance(DialogueNode node, Direction nodeDirection, Port.Capacity capacity = Port.Capacity.Single)
-        {
-            return node.InstantiatePort(Orientation.Horizontal, nodeDirection, capacity, typeof(float));
-        }
-
         private void RemovePort(Node node, Port socket)
         {
-            var targetEdge = edges.ToList()
-                .Where(x => x.output.portName == socket.portName && x.output.node == socket.node);
+            var targetEdge = edges.ToList().Where(x => x.output.portName == socket.portName && x.output.node == socket.node);
+
             if (targetEdge.Any())
             {
                 var edge = targetEdge.First();
@@ -184,6 +276,8 @@ namespace AustenKinney.Dialogue
             node.RefreshPorts();
             node.RefreshExpandedState();
         }
+
+        #endregion
     }
 
 #endif

@@ -11,6 +11,15 @@ namespace AustenKinney.Dialogue
     {
         public string DialogueText;
         public string GUID;
-        public bool EntryPoint = false;
+        public NodeType Type;
+    }
+
+    public enum NodeType
+    {
+        Entry,
+        Dialogue,
+        Choice,
+        TestProperty,
+        SetProperty
     }
 }

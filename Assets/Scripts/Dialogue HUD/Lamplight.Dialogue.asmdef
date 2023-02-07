@@ -1,0 +1,17 @@
+{
+    "name": "Lamplight.Dialogue",
+    "rootNamespace": "Lamplight.Dialogue",
+    "references": [
+        "GUID:d22163fc803a3634296e4e19ac20f1b9",
+        "GUID:84f8fc2c66a24a345a40727e51d07424"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

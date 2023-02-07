@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e20396f3c28256842b8506a477fbae91, type: 3}
+  m_Name: Test 2
+  m_EditorClassIdentifier: 
+  NodeLinks:
+  - BaseNodeGUID: 438cb538-25ac-4b88-a41d-1b479e24ae3e
+    PortName: Next
+    TargetNodeGUID: 612a5015-b94d-4f55-820e-dba920d706f2
+  - BaseNodeGUID: 612a5015-b94d-4f55-820e-dba920d706f2
+    PortName: Output
+    TargetNodeGUID: 640b17bb-e07f-4c23-b881-7c41242420e4
+  - BaseNodeGUID: 640b17bb-e07f-4c23-b881-7c41242420e4
+    PortName: Option 1
+    TargetNodeGUID: bca8ab6a-6e3c-4698-99f9-d6a72880c25b
+  - BaseNodeGUID: 640b17bb-e07f-4c23-b881-7c41242420e4
+    PortName: Option 2
+    TargetNodeGUID: bca8ab6a-6e3c-4698-99f9-d6a72880c25b
+  - BaseNodeGUID: 640b17bb-e07f-4c23-b881-7c41242420e4
+    PortName: Option 3
+    TargetNodeGUID: 2535a4c0-04fa-4765-bcaa-43a63642ee7d
+  - BaseNodeGUID: bca8ab6a-6e3c-4698-99f9-d6a72880c25b
+    PortName: Success
+    TargetNodeGUID: 2535a4c0-04fa-4765-bcaa-43a63642ee7d
+  - BaseNodeGUID: bca8ab6a-6e3c-4698-99f9-d6a72880c25b
+    PortName: Failure
+    TargetNodeGUID: 2535a4c0-04fa-4765-bcaa-43a63642ee7d
+  DialogueNodeData:
+  - NodeGUID: 612a5015-b94d-4f55-820e-dba920d706f2
+    NodeTitle: Dialogue Node
+    DialogueText: Enter dialogue text here.
+    Position: {x: 256.8, y: 168.8}
+    Type: 0
+  - NodeGUID: 640b17bb-e07f-4c23-b881-7c41242420e4
+    NodeTitle: Choice Node
+    DialogueText: Enter dialogue text here.
+    Position: {x: 443.2, y: 168}
+    Type: 0
+  - NodeGUID: bca8ab6a-6e3c-4698-99f9-d6a72880c25b
+    NodeTitle: Test Property Node
+    DialogueText: Enter dialogue text here.
+    Position: {x: 714.4, y: 100}
+    Type: 0
+  - NodeGUID: 2535a4c0-04fa-4765-bcaa-43a63642ee7d
+    NodeTitle: Set Property Node
+    DialogueText: Enter dialogue text here.
+    Position: {x: 920, y: 216.8}
+    Type: 0
+  ExposedProperties: []
+  CommentBlockData: []

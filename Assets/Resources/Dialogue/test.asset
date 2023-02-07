@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e20396f3c28256842b8506a477fbae91, type: 3}
+  m_Name: test
+  m_EditorClassIdentifier: 
+  NodeLinks:
+  - BaseNodeGUID: fd4a8f76-9e29-4a4a-961b-09a3bcc5a60d
+    PortName: Next
+    TargetNodeGUID: 267b0bd9-006b-4640-ae01-7aa98fa3d722
+  DialogueNodeData:
+  - NodeGUID: 267b0bd9-006b-4640-ae01-7aa98fa3d722
+    NodeTitle: Choice Node
+    DialogueText: Enter dialogue text here.
+    Position: {x: 316.8, y: 192.8}
+    Type: 2
+  ExposedProperties: []
+  CommentBlockData: []
