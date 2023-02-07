@@ -7,9 +7,9 @@ namespace AustenKinney.AudioSystem
     public class MusicZoneMaster : MonoBehaviour
     {
         [SerializeField] private SongData song;
-        [SerializeField] private List<MusicZone> currentVolumes;
-        private bool isPlaying;
 
+        private bool isPlaying;
+        private List<MusicZone> currentVolumes = new List<MusicZone>();
         private AudioManager manager;
 
         #region Getters & Setters
@@ -28,24 +28,23 @@ namespace AustenKinney.AudioSystem
         {
             if(isPlaying == false && currentVolumes.Count > 0)
             {
-                //StartCoroutine(manager.TransitionSong(song, 5));
+                manager.SetUpSong(song);
                 isPlaying = true;
             }
             else if(isPlaying == true && currentVolumes.Count == 0)
             {
-                //StartCoroutine(manager.FadeOutSong(song, 2.5f));
                 isPlaying = false;
             }
         }
 
-        public void AdaptTrack(int trackIndex, int clipIndex)
+        public void AdaptTrack(int trackIndex, int clipIndex, float transitionLength)
         {
-            StartCoroutine(manager.TransitionTrack(song, trackIndex, clipIndex, 1));
+            StartCoroutine(manager.TransitionTrack(song, trackIndex, clipIndex, transitionLength));
         }
 
-        public void FadeOutTrack(int trackIndex)
+        public void FadeOutTrack(int trackIndex, float transitionLength)
         {
-            StartCoroutine(manager.FadeOutTrack(song, trackIndex, 1f));
+            StartCoroutine(manager.FadeOutTrack(song, trackIndex, transitionLength));
         }
     }
 }

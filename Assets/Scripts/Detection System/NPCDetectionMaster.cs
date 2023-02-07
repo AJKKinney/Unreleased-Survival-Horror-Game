@@ -125,12 +125,12 @@ namespace AustenKinney.DetectionSystem
             {
                 if (hitInfo.collider == collider)
                 {
-                    Debug.DrawLine(transform.position, collider.transform.position + (collider.transform.localToWorldMatrix.rotation * collider.center), Color.cyan);
+                    Debug.DrawLine(transform.position, hitInfo.point, Color.cyan);
                     return true;
                 }
             }
 
-            Debug.DrawLine(transform.position, collider.transform.position + (collider.transform.localToWorldMatrix.rotation * collider.center), Color.red);
+            Debug.DrawLine(transform.position, hitInfo.point, Color.red);
             return false;
         }
 

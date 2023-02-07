@@ -18,6 +18,8 @@ namespace AustenKinney.AudioSystem
         private List<AudioSource> ambientSourcePool = new List<AudioSource>();
         private List<AudioSource> dialogueSourcePool = new List<AudioSource>();
 
+        private Camera mainCam;
+
         #region Getters & Setters
 
         /// <summary>
@@ -39,6 +41,7 @@ namespace AustenKinney.AudioSystem
             database = new AudioDatabase();
             database.LoadData();
             settings = new AudioSettingsData();
+            mainCam = Camera.main;
         }
 
         #endregion
@@ -213,8 +216,6 @@ namespace AustenKinney.AudioSystem
         {
             List<AudioSource> pool = GetAudioPool(song.Category);
 
-            SetupAudioSource(pool);
-
             float volume = song.Gain * settings.MasterVolume * GetVolumeLevelForCategory(song.Category);
 
             pool[track].volume = 0;
@@ -233,7 +234,14 @@ namespace AustenKinney.AudioSystem
         public IEnumerator TransitionTrack(SongData song, int track, int clip, float transitionLength)
         {
             yield return StartCoroutine(FadeOutTrack(song, track, transitionLength / 2));
-
+            List<AudioSource> pool = GetAudioPool(song.Category);
+            if (pool[track].isPlaying)
+            {
+                pool[track].Stop();
+            }
+            pool[track].clip = song.Tracks[track].Clips[clip];
+            SyncSources(song.Category);
+            pool[track].Play();
             yield return StartCoroutine(FadeInTrack(song, track, transitionLength / 2));
         }
 
@@ -247,7 +255,18 @@ namespace AustenKinney.AudioSystem
 
             for(int i = 0; i < sourcePool.Count; i++)
             {
-                if(i > 0)
+                if (i == 0)
+                {
+                    for(int z = 1; z < sourcePool.Count; z ++)
+                    {
+                        if(sourcePool[z].isPlaying)
+                        {
+                            sourcePool[i].time = sourcePool[z].time;
+                            return;
+                        }
+                    }
+                }
+                else if(i > 0)
                 {
                     sourcePool[i].time = sourcePool[0].time;
                 }
@@ -311,6 +330,26 @@ namespace AustenKinney.AudioSystem
             }
            
             return sourceAvailable;
+        }
+
+        public List<AudioSource> SetUpSong(SongData song)
+        {
+            List<AudioSource> pool = GetAudioPool(song.Category);
+
+            for (int i = 0; i < song.Tracks.Count; i++)
+            {
+                if (i > pool.Count - 1)
+                {
+                    AudioSource sourceAvailable = null;
+                    GameObject gameObject = new GameObject("Audio Source");
+                    sourceAvailable = gameObject.AddComponent<AudioSource>();
+                    gameObject.transform.parent = mainCam.transform;
+                    gameObject.transform.position = mainCam.transform.position;
+                    pool.Add(sourceAvailable);
+                }
+            }
+
+            return pool;
         }
 
         private List<AudioSource> GetAudioPool(AudioCategory category)

@@ -10,6 +10,7 @@ namespace AustenKinney.AudioSystem
         [SerializeField] private bool adaptTrack = false;
         [SerializeField] private int targetTrack;
         [SerializeField] private int clip;
+        [SerializeField] private float transitionLength = 1f;
 
         private MusicZoneMaster master;
 
@@ -18,6 +19,7 @@ namespace AustenKinney.AudioSystem
         public bool AdaptTrack { get { return adaptTrack; } set { adaptTrack = value; } }
         public int TargetTrack { get { return targetTrack; } set { targetTrack = value; } }
         public int Clip { get { return clip; } set { clip = value; } }
+        public float TransitionLength { get { return transitionLength; } set { transitionLength = value; } }
         public MusicZoneMaster Master { get { return master; } set { master = value; } }
 
         #endregion
@@ -41,7 +43,7 @@ namespace AustenKinney.AudioSystem
 
                 if (adaptTrack == true)
                 {
-                    master.AdaptTrack(targetTrack, clip);
+                    master.AdaptTrack(targetTrack, clip, transitionLength);
                 }
 
                 master.CurrentVolumes.Add(this);
@@ -52,7 +54,7 @@ namespace AustenKinney.AudioSystem
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("Push Box") && other.CompareTag("Player"))
             {
-                master.FadeOutTrack(targetTrack);
+                master.FadeOutTrack(targetTrack, transitionLength);
             }
 
             master.CurrentVolumes.Remove(this);
@@ -98,6 +100,13 @@ namespace AustenKinney.AudioSystem
 
                 EditorGUILayout.EndHorizontal();
             }
+
+            EditorGUILayout.BeginHorizontal();
+
+            EditorGUILayout.LabelField("Transition Length");
+            serializedObject.FindProperty("transitionLength").floatValue = EditorGUILayout.Slider(script.TransitionLength, 0, 5);
+
+            EditorGUILayout.EndHorizontal();
 
             serializedObject.ApplyModifiedProperties();
         }
