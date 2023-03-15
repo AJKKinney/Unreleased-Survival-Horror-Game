@@ -121,7 +121,7 @@ namespace AustenKinney.Dialogue
 
         private void Load()
         {
-            string loadPath = EditorUtility.OpenFilePanel("Load", Application.dataPath + "/Resources/Dialogue/" + fileName + ".asset", "asset");
+            string loadPath = EditorUtility.OpenFilePanel("Load", Application.dataPath + "/Resources/Dialogue/", "asset");
             loadPath = loadPath.Replace(Application.dataPath, "Assets");
             fileName = loadPath.Replace("Assets/Resources/Dialogue/", "");
             fileName = fileName.Replace(".asset", "");
