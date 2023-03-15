@@ -111,10 +111,11 @@ namespace AustenKinney.Dialogue
 
         private void SaveAs()
         {
-            string savePath = EditorUtility.SaveFilePanelInProject("Save As...", fileName + ".asset", "asset", "Select a location to save the dialogue data.");
+            string savePath = EditorUtility.SaveFilePanel("Save As...", Application.dataPath + "/Resources/Dialogue/", fileName, "asset");
+            savePath = savePath.Replace(Application.dataPath, "Assets");
             fileName = savePath.Replace("Assets/Resources/Dialogue/", "");
             fileName = fileName.Replace(".asset", "");
-            Debug.Log(fileName);
+            Debug.Log(fileName + " was saved at path: " + savePath);
             RequestDataOperation(true, savePath);
 
         }
@@ -125,7 +126,7 @@ namespace AustenKinney.Dialogue
             loadPath = loadPath.Replace(Application.dataPath, "Assets");
             fileName = loadPath.Replace("Assets/Resources/Dialogue/", "");
             fileName = fileName.Replace(".asset", "");
-            Debug.Log(fileName);
+            Debug.Log(fileName + " was loaded at path: " + loadPath);
             RequestDataOperation(false, loadPath);
         }
 
