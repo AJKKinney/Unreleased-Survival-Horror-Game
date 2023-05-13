@@ -9,7 +9,7 @@ namespace Lamplight.Interaction
     {
         InteractionManager manager;
 
-        private void Start()
+        protected void Start()
         {
             manager = InteractionManager.instance;
         }
@@ -33,5 +33,6 @@ namespace Lamplight.Interaction
                 Debug.Log("Removed Interactable " + gameObject.name + " from Interaction Manager.");
             }
         }
+
     }
 }

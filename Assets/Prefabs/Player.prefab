@@ -54,6 +54,7 @@ MonoBehaviour:
   rotationSpeed: 15
   accelerationSpeed: 5
   decelerationSpeed: 6
+  gravityForce: 72
   whistleRange: 15
   debugMode: 0
 --- !u!114 &656168520

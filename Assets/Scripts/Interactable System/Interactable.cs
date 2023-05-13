@@ -6,7 +6,7 @@ namespace Lamplight.Interaction
 {
     public class Interactable : MonoBehaviour
     {
-        internal virtual void Interact(GameObject interactor)
+        public virtual void Interact(GameObject interactor)
         {
             Debug.Log(interactor.name + " interacted with " + this.name);
         }

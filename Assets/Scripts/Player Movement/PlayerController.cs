@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float accelerationSpeed;
     [Tooltip("Deceleration Speed controls the rate at which the player loses momentum when stopping")]
     [SerializeField] private float decelerationSpeed;
+    [Tooltip("Gravity Force controls how powerful the pull of gravity is when falling")]
+    [SerializeField] private float gravityForce;
 
     private Vector2 moveInput;
     private Vector3 currentVelocity;
@@ -31,10 +33,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool debugMode;
 
 
+    //External Components
+
     private Animator animator;
     private CharacterController characterController;
     private AudioManager audioManager;
     private DetectableObject detectableObject;
+    private InventoryManager inventoryManager;
 
 
     void Awake()
@@ -47,6 +52,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         audioManager = AudioManager.instance;
+        inventoryManager = InventoryManager.instance;
     }
 
     void Update()
@@ -55,9 +61,21 @@ public class PlayerController : MonoBehaviour
         Whistle();
     }
 
+    #region Movement
+
+    private void CalculateGravity()
+    {
+        if(characterController.isGrounded == false)
+        {
+            currentVelocity.y -= gravityForce * Time.deltaTime;
+        }
+    }
+
     private void Move()
     {
         moveInput = InputProvider.playerActions.GameActions.Move.ReadValue<Vector2>();
+
+        CalculateGravity();
 
         if (moveInput.magnitude > 0 || currentVelocity.magnitude > 0.1f)
         {
@@ -93,21 +111,39 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetFloat("ForwardVelocity", (Quaternion.Euler(0, -transform.rotation.eulerAngles.y, 0) * currentVelocity).z / sprintSpeed);
             animator.SetFloat("RightVelocity", (Quaternion.Euler(0, -transform.rotation.eulerAngles.y, 0) * currentVelocity).x / sprintSpeed);
-            animator.SetFloat("CurrentSpeed", (currentVelocity).magnitude / sprintSpeed);
+            float horizontalSpeed = new Vector2(currentVelocity.x, currentVelocity.z).magnitude;
+            animator.SetFloat("CurrentSpeed", horizontalSpeed / sprintSpeed);
         }
     }
 
+    //Calculates the player's movement speed
     private float CalculateSpeed()
     {
-        if(InputProvider.playerActions.GameActions.Sprint.IsPressed())
+        float finalSpeed;
+
+        //weight modifier - The more weight the player carries the slower they will move.
+        float weightMod = 1f;
+        if (inventoryManager.CarriedWeight > 0)
         {
-            return sprintSpeed;
+            float encumberance = (inventoryManager.CarriedWeight / inventoryManager.MaxCarryWeight);
+            weightMod = Mathf.Lerp(1f, 0.5f, encumberance);
+        }
+
+        if (InputProvider.playerActions.GameActions.Sprint.IsPressed())
+        {
+            finalSpeed = sprintSpeed * weightMod;
         }
         else
         {
-            return baseSpeed;
+            finalSpeed = baseSpeed * weightMod;
         }
+
+        return finalSpeed;
     }
+
+    #endregion
+
+    #region Actions
 
     private void Whistle()
     {
@@ -122,4 +158,6 @@ public class PlayerController : MonoBehaviour
             whistling = false;
         }
     }
+
+    #endregion
 }

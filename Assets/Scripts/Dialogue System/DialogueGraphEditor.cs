@@ -117,7 +117,6 @@ namespace AustenKinney.Dialogue
             fileName = fileName.Replace(".asset", "");
             Debug.Log(fileName + " was saved at path: " + savePath);
             RequestDataOperation(true, savePath);
-
         }
 
         private void Load()
