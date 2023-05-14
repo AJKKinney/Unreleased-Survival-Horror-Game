@@ -37,6 +37,11 @@ namespace Lamplight.UI
             InputProvider.playerActions.GameActions.Menu.started += _ => ToggleMenu();
         }
 
+        private void Start()
+        {
+            GameStateMaster.SetState(GameState.Gameplay);
+        }
+
         #endregion
 
         #region UI Methods

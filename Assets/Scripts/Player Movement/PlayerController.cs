@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float baseSpeed;
     [Tooltip("Sprint Speed controls the player's movement speed when sprinting")]
     [SerializeField] private float sprintSpeed;
+    [Tooltip("Crouch Speed controls the player's movement speed when crouched")]
+    [SerializeField] private float crouchSpeed;
     [Tooltip("Rotation Speed controls the player's turning speed")]
     [SerializeField] private float rotationSpeed;
     [Tooltip("Acceleration Speed controls the rate at which the player gains momentum when moving")]
@@ -21,6 +23,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float gravityForce;
 
     private Vector2 moveInput;
+    private bool isCrouched;
     private Vector3 currentVelocity;
 
     [Header("Player Whistle")]
@@ -41,6 +44,13 @@ public class PlayerController : MonoBehaviour
     private DetectableObject detectableObject;
     private InventoryManager inventoryManager;
 
+    #region Getters & Setters
+
+    public bool IsCrouched { get { return isCrouched; } }
+
+    #endregion
+
+    #region Initialization
 
     void Awake()
     {
@@ -55,8 +65,11 @@ public class PlayerController : MonoBehaviour
         inventoryManager = InventoryManager.instance;
     }
 
+    #endregion
+
     void Update()
     {
+        ToggleCrouch();
         Move();
         Whistle();
     }
@@ -103,9 +116,9 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Moving Player \n X: " + currentVelocity.x + " Y: " + currentVelocity.y + " Z: " + currentVelocity.z);
                 Debug.DrawLine(transform.position + characterController.center, transform.position + characterController.center + (currentVelocity / Time.deltaTime), Color.yellow);
             }
-
-            characterController.Move(currentVelocity * Time.deltaTime);
         }
+
+        characterController.Move(currentVelocity * Time.deltaTime);
 
         if (animator != null)
         {
@@ -131,7 +144,16 @@ public class PlayerController : MonoBehaviour
 
         if (InputProvider.playerActions.GameActions.Sprint.IsPressed())
         {
+            if(isCrouched == true)
+            {
+                isCrouched = false;
+            }
+
             finalSpeed = sprintSpeed * weightMod;
+        }
+        else if(isCrouched == true)
+        {
+            finalSpeed = crouchSpeed * weightMod;
         }
         else
         {
@@ -144,6 +166,33 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Actions
+    
+    private void ToggleCrouch()
+    {
+        bool toggleCrouch = false;
+
+        if (InputProvider.playerActions.GameActions.Sprint.IsPressed() == false)
+        {
+            toggleCrouch = InputProvider.playerActions.GameActions.Crouch.WasPressedThisFrame();
+        }
+
+        if(toggleCrouch == true)
+        {
+            isCrouched = !isCrouched;
+        }
+
+        if (animator != null)
+        {
+            if (isCrouched == true && animator.GetBool("IsCrouched") == false)
+            {
+                animator.SetBool("IsCrouched", true);
+            }
+            else if (isCrouched == false && animator.GetBool("IsCrouched") == true)
+            {
+                animator.SetBool("IsCrouched", false);
+            }
+        }
+    }
 
     private void Whistle()
     {
