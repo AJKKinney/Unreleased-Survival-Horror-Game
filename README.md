@@ -1,6 +1,6 @@
 # Unreleased Survival Horror Game
 
-This is a indie survival horror game developed by Austen Kinney, which features giant monsters, a beautiful world to explore, 
+This is an indie survival horror game developed by Austen Kinney, which features giant monsters, a beautiful world to explore, 
 a robust stealth system, a deep combat system, a simple but rewarding crafting system, a branching cinematic story, and 
 hidden secrets to discover. 
 
