@@ -1,6 +1,6 @@
-# Lamplight
+# Unreleased Survival Horror Game
 
-Lamplight is a indie survival horror game developed by Austen Kinney, which features giant monsters, a beautiful world to explore, 
+This is a indie survival horror game developed by Austen Kinney, which features giant monsters, a beautiful world to explore, 
 a robust stealth system, a deep combat system, a simple but rewarding crafting system, a branching cinematic story, and 
 hidden secrets to discover. 
 
