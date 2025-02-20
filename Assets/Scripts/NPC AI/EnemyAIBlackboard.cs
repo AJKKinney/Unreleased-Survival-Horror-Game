@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAIBlackboard : MonoBehaviour
+
+public class EnemyAIBlackboard : ScriptableObject
 {
-    public Transform enemy;
     public Transform player;
-    public UnityEngine.AI.NavMeshAgent agent;
 }

@@ -6,16 +6,16 @@ public class BehaviorMoveToTargetNode : BehaviorTreeNode
 {
     [SerializeField] private float stoppingDistance = 2f;
 
-    public override NodeState Tick(AIBlackboard blackboard)
+    public override NodeState Tick(AIController controller)
     {
-        if (blackboard.Player == null || blackboard.Agent == null)
+        if (controller.Blackboard.Player == null || controller.AINavmeshAgent == null)
         {
             return NodeState.Failure;
         }
 
-        blackboard.Agent.SetDestination(blackboard.Player.position);
+        controller.AINavmeshAgent.SetDestination(controller.Blackboard.Player.position);
 
-        bool reachedDestination = Vector3.Distance(blackboard.Enemy.position, blackboard.Player.position) < stoppingDistance;
+        bool reachedDestination = Vector3.Distance(controller.AITransform.position, controller.Blackboard.Player.position) < stoppingDistance;
         
         if(reachedDestination == true)
         {

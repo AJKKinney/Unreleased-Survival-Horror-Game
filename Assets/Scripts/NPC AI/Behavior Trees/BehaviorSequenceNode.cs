@@ -12,11 +12,11 @@ public class BehaviorSequenceNode : BehaviorTreeNode
     }
 
 
-    public override NodeState Tick(AIBlackboard blackboard)
+    public override NodeState Tick(AIController controller)
     {
         foreach (var child in children)
         {
-            NodeState result = child.Tick(blackboard);
+            NodeState result = child.Tick(controller);
             if (result == NodeState.Failure)
             {
                 return NodeState.Failure;

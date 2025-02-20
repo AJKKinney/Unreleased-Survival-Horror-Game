@@ -1,17 +1,27 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AIBlackboard : MonoBehaviour
+[CreateAssetMenu(fileName = "AIBlackboard", menuName = "AI/Blackboard")]
+public class AIBlackboard:ScriptableObject
 {
-    private Transform enemy;
     private Transform player;
-    private NavMeshAgent agent;
 
     #region Getters & Setters
 
-    public Transform Enemy { get => enemy; set => enemy = value; }
-    public Transform Player { get => player; set => player = value; }
-    public NavMeshAgent Agent { get => agent; set => agent = value; }
+    public Transform Player 
+    {
+        get
+        {
+            if(player == null)
+            {
+                player = Player = GameObject.FindGameObjectWithTag("Player").transform;
+            }
+
+            return player;
+        }
+
+        set => player = value; 
+    }
 
     #endregion
 }

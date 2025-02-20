@@ -7,8 +7,8 @@ public class BehaviorTree : ScriptableObject
 {
     [SerializeField] private BehaviorTreeNode rootNode;
 
-    public BehaviorTreeNode.NodeState Tick(AIBlackboard blackboard)
+    public BehaviorTreeNode.NodeState Tick(AIController controller)
     {
-        return rootNode.Tick(blackboard);
+        return rootNode.Tick(controller);
     }
 }

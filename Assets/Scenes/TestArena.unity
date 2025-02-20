@@ -225,8 +225,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0673716951a32ab40aba8536f417df73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDetectRange: 4
   behaviorTree: {fileID: 11400000, guid: 1c2ec290dd224ed449b97ef6709b3d40, type: 2}
+  blackboard: {fileID: 11400000, guid: 1863ef20508f605459743e3fc5c34622, type: 2}
 --- !u!1 &66039648 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 66039648, guid: 6be211c2e5a63984990f75c81b2720e5, type: 3}
