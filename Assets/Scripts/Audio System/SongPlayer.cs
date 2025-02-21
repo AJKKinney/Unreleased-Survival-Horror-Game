@@ -12,7 +12,7 @@ namespace AustenKinney.AudioSystem
 
         private void Start()
         {
-            audioManager = AudioManager.instance;
+            audioManager = AudioManager.Instance;
             PlaySong(0);
         }
 

@@ -61,8 +61,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        audioManager = AudioManager.instance;
-        inventoryManager = InventoryManager.instance;
+        audioManager = AudioManager.Instance;
+        inventoryManager = InventoryManager.Instance;
     }
 
     #endregion

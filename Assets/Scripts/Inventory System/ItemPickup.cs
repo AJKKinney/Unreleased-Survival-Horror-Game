@@ -12,7 +12,7 @@ public class ItemPickup : VolumeInteractable
     protected void Start()
     {
         base.Start();
-        inventoryManager = InventoryManager.instance;
+        inventoryManager = InventoryManager.Instance;
     }
 
     override public void Interact(GameObject interactor)

@@ -21,7 +21,7 @@ namespace AustenKinney.AudioSystem
 
         private void Start()
         {
-            manager = AudioManager.instance;
+            manager = AudioManager.Instance;
         }
 
         private void Update()

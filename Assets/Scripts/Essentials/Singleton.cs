@@ -6,14 +6,16 @@ namespace AustenKinney.Essentials
 {
     public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
-        public static T instance;
-        private static bool IsBeingDestroyed = false;
+        [SerializeField] internal bool sceneOnly = false;
+
+        private static T instance;
+        private static bool isBeingDestroyed = false;
 
         public static T Instance
         {
             get
             {
-                if (IsBeingDestroyed || !Application.isPlaying)
+                if (isBeingDestroyed || !Application.isPlaying)
                     return null;
 
                 if (instance == null)
@@ -36,26 +38,29 @@ namespace AustenKinney.Essentials
 
             instance = this as T;
 
-            if (transform.parent == null)
+            if (sceneOnly == false)
             {
-                DontDestroyOnLoad(this);
-            }
-            else
-            {
-                DontDestroyOnLoad(transform.parent);
+                if (transform.parent == null)
+                {
+                    DontDestroyOnLoad(this);
+                }
+                else
+                {
+                    DontDestroyOnLoad(transform.parent);
+                }
             }
 
             Init();
-            IsBeingDestroyed = false;
+            isBeingDestroyed = false;
         }
 
         public virtual void OnDestroy()
         {
-            IsBeingDestroyed = true;
+            //isBeingDestroyed = true;
 
             if (!gameObject.scene.isLoaded) return;
 
-            Debug.LogWarning(this.gameObject.name + " got destroyed.");
+            Debug.LogWarning(this.gameObject.name + " was destroyed.");
         }
 
     }

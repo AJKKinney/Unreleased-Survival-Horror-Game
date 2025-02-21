@@ -33,7 +33,7 @@ namespace Lamplight.UI
 
         public override void Init()
         {
-            audioManager = AudioManager.instance;
+            audioManager = AudioManager.Instance;
             InputProvider.playerActions.GameActions.Menu.started += _ => ToggleMenu();
         }
 

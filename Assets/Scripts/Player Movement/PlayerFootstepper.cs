@@ -15,8 +15,8 @@ public class PlayerFootstepper : MonoBehaviour
 
     private void Start()
     {
-        audioManager = AudioManager.instance;
-        inventoryManager = InventoryManager.instance;
+        audioManager = AudioManager.Instance;
+        inventoryManager = InventoryManager.Instance;
         detectableObject = transform.root.GetComponent<DetectableObject>();
         playerController = transform.root.GetComponent<PlayerController>();
     }

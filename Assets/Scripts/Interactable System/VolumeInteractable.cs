@@ -11,7 +11,7 @@ namespace Lamplight.Interaction
 
         protected void Start()
         {
-            manager = InteractionManager.instance;
+            manager = InteractionManager.Instance;
         }
 
         private void OnTriggerEnter(Collider other)
